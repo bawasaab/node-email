@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon singleEmail.js"
+    "start": "nodemon singleEmailAsService.js"
   },
   "author": "",
   "license": "ISC",
