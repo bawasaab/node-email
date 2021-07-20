@@ -8,6 +8,7 @@ module.exports = class sendMailService {
     to;
     subject;
     text;
+    html;
     auth;
 
     constructor( object ) {
@@ -43,7 +44,6 @@ module.exports = class sendMailService {
 
             return new Promise((resolve, reject) => {
                 
-                // const arrayUsersMail = ['recepient1@yopmail.com'];
                 const arrayUsersMail = $this.to ? $this.to : ['recepient1@yopmail.com'];
                 const stringUsersMail = arrayUsersMail.join(', ');
                 
@@ -51,7 +51,8 @@ module.exports = class sendMailService {
                     from: $this.from ? $this.from : 'your-google-mail-account@gmail.com',
                     to: stringUsersMail, // myfriend@yahoo.com, myotherfriend@yahoo.com using comma seperate strings
                     subject: $this.subject ? $this.subject : 'Sending Email using Node.js',
-                    text: $this.text ? $this.text : 'That was easy!'
+                    // text: $this.text ? $this.text : 'That was easy!',
+                    html: $this.html ? $this.html : "<b>There is a new article. It's about sending emails, check it out!</b>", // html body
                 };
                 
                 $this.transporter.sendMail(mailOptions, function (error, info) {
