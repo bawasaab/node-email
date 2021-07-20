@@ -8,6 +8,8 @@ var transporter = nodemailer.createTransport({
 	}
 });
 
+transporter.verify().then(console.log).catch(console.error);
+
 const arrayUsersMail = ['receipient1@ymail.com', 'receipient2@gmail.com'];
 const stringUsersMail = arrayUsersMail.join(', ');
 

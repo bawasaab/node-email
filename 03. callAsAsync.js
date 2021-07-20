@@ -1,10 +1,23 @@
 const sendMailService = require('./singleEmailAsService');
 
-async function sendMails()  {
+let config = {
+    auth: {
+        service: 'gmail',
+        user: 'deepak4bawa@gmail.com',
+        pass: 'bqmsgvhcphrgpvrn'
+    },
+    from: 'deepak4bawa@gmail.com',
+    to: ['bawa_d@ymail.com'],
+    subject: 'Sending Email using Node.js cust',
+    text: 'Welcome this.'
+};
 
-    try {
+async function sendMails()  {
     
-        let result = await sendMailService();
+    try {
+        
+        const sendMailServiceObj = new sendMailService( config );
+        let result = await sendMailServiceObj.sendMail();
         return result;
     } catch( ex ) {
         return ex;

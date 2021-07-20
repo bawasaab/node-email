@@ -1,51 +1,82 @@
 const nodemailer = require('nodemailer');
+let $this;
 
-module.exports = function sendMailService() {
+module.exports = class sendMailService {
     
-    try {
+    transporter;
+    from;
+    to;
+    subject;
+    text;
+    auth;
 
-        return new Promise((resolve, reject) => {
+    constructor( object ) {
 
-            var transporter = nodemailer.createTransport({
-                service: 'gmail',
-                auth: {
-                    user: 'your-google-mail-account@gmail.com',
-		            pass: 'your-google-mail-password'
-                }
-            });
-            
-            const arrayUsersMail = ['recepient1@yopmail.com'];
-            const stringUsersMail = arrayUsersMail.join(', ');
-            
-            var mailOptions = {
-                from: 'your-google-mail-account@gmail.com',
-                to: stringUsersMail, // myfriend@yahoo.com, myotherfriend@yahoo.com using comma seperate strings
-                subject: 'Sending Email using Node.js',
-                text: 'That was easy!'
-            };
-            
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    return reject({
-                        sent: false,
-                        msg: error.response,
-                        obj: error
-                    });
-                } else {
-                    return resolve({
-                        sent: true,
-                        msg: info.response,
-                        obj: info
-                    });
-                }
-            });
+        $this = this;
+        $this = object;
+
+        $this.transporter = nodemailer.createTransport({
+            service: $this.auth.service,
+            auth: {
+                user: $this.auth.user,
+                pass: $this.auth.pass
+            }
         });
-    } catch( ex ) {
 
-        return reject({
-            sent: false,
-            msg: ex.toString(),
-            obj: ex
-        });
+        /**
+         * connecting to gmail starts here
+         */
+        $this.transporter.verify()
+        .then( ( result ) => {
+            console.log(`${$this.auth.service} connected: `, result);
+        } ).catch( ( error ) => {
+            console.log(`${$this.auth.service} connection error: `, error);
+        } );
+        /**
+         * connecting to gmail ends here
+         */
+    }
+
+    sendMail = () => {
+
+        try {
+
+            return new Promise((resolve, reject) => {
+                
+                // const arrayUsersMail = ['recepient1@yopmail.com'];
+                const arrayUsersMail = $this.to ? $this.to : ['recepient1@yopmail.com'];
+                const stringUsersMail = arrayUsersMail.join(', ');
+                
+                var mailOptions = {
+                    from: $this.from ? $this.from : 'your-google-mail-account@gmail.com',
+                    to: stringUsersMail, // myfriend@yahoo.com, myotherfriend@yahoo.com using comma seperate strings
+                    subject: $this.subject ? $this.subject : 'Sending Email using Node.js',
+                    text: $this.text ? $this.text : 'That was easy!'
+                };
+                
+                $this.transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {
+                        return reject({
+                            sent: false,
+                            msg: error.response,
+                            obj: error
+                        });
+                    } else {
+                        return resolve({
+                            sent: true,
+                            msg: info.response,
+                            obj: info
+                        });
+                    }
+                });
+            });
+        } catch( ex ) {
+    
+            return reject({
+                sent: false,
+                msg: ex.toString(),
+                obj: ex
+            });
+        }
     }
 }
