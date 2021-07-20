@@ -9,12 +9,12 @@ module.exports = function sendMailService() {
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                    user: 'deepak4bawa@gmail.com',
-                    pass: 'bqmsgvhcphrgpvrn'
+                    user: 'your-google-mail-account@gmail.com',
+		            pass: 'your-google-mail-password'
                 }
             });
             
-            const arrayUsersMail = ['bawa_d@ymail.com'];
+            const arrayUsersMail = ['recepient1@yopmail.com'];
             const stringUsersMail = arrayUsersMail.join(', ');
             
             var mailOptions = {
