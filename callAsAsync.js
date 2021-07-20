@@ -7,11 +7,11 @@ async function sendMails()  {
         let result = await sendMailService();
         return result;
     } catch( ex ) {
-        return exception;
+        return ex;
     }
 }
 
-sendMailService()
+sendMails()
 .then( (result) => {
     console.log('result', result);
 } )
